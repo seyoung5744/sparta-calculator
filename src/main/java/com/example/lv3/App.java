@@ -28,7 +28,7 @@ public class App {
                 String option = input.readInput();
 
                 switch (option) {
-                    case "1" -> calculator();
+                    case "1" -> calculate();
                     case "2" -> calculator.removeResult();
                     case "3" -> {
                         output.println("결과 목록");
@@ -45,14 +45,14 @@ public class App {
 
     }
 
-    private void calculator() {
+    private void calculate() {
         output.print("첫 번째 숫자를 입력하세요: ");
         int num1 = Integer.parseInt(input.readNumber());
         output.print("두 번째 숫자를 입력하세요: ");
         int num2 = Integer.parseInt(input.readNumber());
 
         output.print("사칙연산 기호를 입력하세요: ");
-        String operator = input.readOperation();
+        Operator operator = Operator.fromSymbol(input.readInput());
 
         int result = calculator.calculate(num1, num2, operator);
         calculator.saveResult(result);

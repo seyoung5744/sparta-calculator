@@ -13,23 +13,12 @@ public class Calculator {
         this.results = new ArrayList<>();
     }
 
-    public int calculate(int operand1, int operand2, String operator) {
-        return switch (operator) {
-            case "+" -> operand1 + operand2;
-            case "-" -> operand1 - operand2;
-            case "*" -> operand1 * operand2;
-            case "/" -> {
-                if (operand2 == 0) {
-                    throw new ArithmeticException("나눗셈 연산에서 분모(두번째 정수)에 0이 입력될 수 없습니다.");
-                }
-                yield operand1 / operand2;
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + operator);
-        };
+    public int calculate(int operand1, int operand2, Operator operator) {
+        return operator.apply(operand1, operand2);
     }
 
-    public void saveFormula(int operand1, int operand2, String operator) {
-        String calculationFormula = operand1 + operator + operand2;
+    public void saveFormula(int operand1, int operand2, Operator operator) {
+        String calculationFormula = operand1 + " " + operator.getSymbol() + " " + operand2;
         formula.add(calculationFormula);
     }
 
