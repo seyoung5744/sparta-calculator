@@ -9,7 +9,7 @@ public class Main {
         App app = new App(
                 new ConsoleInputProvider(new Parser()),
                 new ConsoleOutputReader(),
-                new Calculator()
+                new Calculator<>()
         );
         app.run();
     }

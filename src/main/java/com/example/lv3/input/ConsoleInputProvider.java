@@ -25,7 +25,8 @@ public class ConsoleInputProvider implements InputProvider {
     public String readNumber() {
         while (true) {
             try {
-                return parser.parseNum(scanner.nextLine());
+                String input = scanner.nextLine();
+                return parser.parseNum(input);
             } catch (InvalidNumberInputException e) {
                 throw new InvalidNumberInputException("InvalidNumberInputException: " + e.getMessage() + "\n");
             }
@@ -36,7 +37,8 @@ public class ConsoleInputProvider implements InputProvider {
     public String readOperation() {
         while (true) {
             try {
-                return parser.parseOperation(scanner.nextLine());
+                String input = scanner.nextLine();
+                return parser.parseOperation(input);
             } catch (InvalidOperationInputException e) {
                 throw new InvalidNumberInputException("InvalidOperationInputException: " + e.getMessage() + "\n");
             }

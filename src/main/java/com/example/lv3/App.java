@@ -2,6 +2,7 @@ package com.example.lv3;
 
 import com.example.lv3.enums.AppStatus;
 import com.example.lv3.enums.Operator;
+import com.example.lv3.formatter.ResultFormatter;
 import com.example.lv3.input.InputProvider;
 import com.example.lv3.output.OutputReader;
 
@@ -9,11 +10,11 @@ public class App {
 
     private final InputProvider input;
     private final OutputReader output;
-    private final Calculator calculator;
+    private final Calculator<Double> calculator;
 
     private AppStatus status = AppStatus.IN_PROGRESS;
 
-    public App(InputProvider input, OutputReader output, Calculator calculator) {
+    public App(InputProvider input, OutputReader output, Calculator<Double> calculator) {
         this.input = input;
         this.output = output;
         this.calculator = calculator;
@@ -54,18 +55,18 @@ public class App {
 
     private void calculate() {
         output.print("첫 번째 숫자를 입력하세요: ");
-        int num1 = Integer.parseInt(input.readNumber());
+        double num1 = Double.parseDouble(input.readNumber());
         output.print("두 번째 숫자를 입력하세요: ");
-        int num2 = Integer.parseInt(input.readNumber());
+        double num2 = Double.parseDouble(input.readNumber());
 
         output.print("사칙연산 기호를 입력하세요: ");
         Operator operator = Operator.fromSymbol(input.readInput());
 
-        int result = calculator.calculate(num1, num2, operator);
+        Double result = calculator.calculate(num1, num2, operator);
         calculator.saveResult(result);
         calculator.saveFormula(num1, num2, operator);
 
-        output.println("계산 결과: " + result);
+        output.println("계산 결과: " + ResultFormatter.format(result));
     }
 
 }

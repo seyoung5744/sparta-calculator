@@ -1,30 +1,31 @@
 package com.example.lv3;
 
+import com.example.lv3.enums.AbstractOperator;
 import com.example.lv3.enums.Operator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Calculator {
+public class Calculator<T extends Number> {
 
     private final List<String> formula;
-    private final List<Integer> results;
+    private final List<T> results;
 
     public Calculator() {
         this.formula = new ArrayList<>();
         this.results = new ArrayList<>();
     }
 
-    public int calculate(int operand1, int operand2, Operator operator) {
+    public T calculate(T operand1, T operand2, AbstractOperator<T> operator) {
         return operator.apply(operand1, operand2);
     }
 
-    public void saveFormula(int operand1, int operand2, Operator operator) {
+    public void saveFormula(T operand1, T operand2, Operator operator) {
         String calculationFormula = operand1 + " " + operator.getSymbol() + " " + operand2;
         formula.add(calculationFormula);
     }
 
-    public void saveResult(int result) {
+    public void saveResult(T result) {
         results.add(result);
     }
 
