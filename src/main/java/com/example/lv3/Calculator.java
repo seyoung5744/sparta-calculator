@@ -1,5 +1,7 @@
 package com.example.lv3;
 
+import com.example.lv3.enums.Operator;
+
 import java.util.ArrayList;
 import java.util.List;
 

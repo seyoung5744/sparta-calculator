@@ -1,5 +1,7 @@
 package com.example.lv3;
 
+import com.example.lv3.enums.AppStatus;
+import com.example.lv3.enums.Operator;
 import com.example.lv3.input.InputProvider;
 import com.example.lv3.output.OutputReader;
 
@@ -9,6 +11,8 @@ public class App {
     private final OutputReader output;
     private final Calculator calculator;
 
+    private AppStatus status = AppStatus.IN_PROGRESS;
+
     public App(InputProvider input, OutputReader output, Calculator calculator) {
         this.input = input;
         this.output = output;
@@ -16,7 +20,7 @@ public class App {
     }
 
     public void run() {
-        while (true) {
+        while (status == AppStatus.IN_PROGRESS) {
             try {
                 output.println("================");
                 output.println("1. 계산기");
@@ -34,7 +38,10 @@ public class App {
                         output.println("결과 목록");
                         calculator.printResults();
                     }
-                    case "4" -> output.println("프로그램을 종료합니다.");
+                    case "4" -> {
+                        output.println("프로그램을 종료합니다.");
+                        status = AppStatus.FINISH;
+                    }
                     default -> output.println("유효하지 않은 선택지입니다.");
                 }
 

@@ -1,4 +1,4 @@
-package com.example.lv3;
+package com.example.lv3.enums;
 
 import com.example.lv3.exception.InvalidOperationInputException;
 
