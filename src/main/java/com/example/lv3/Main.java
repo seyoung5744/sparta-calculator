@@ -1,5 +1,6 @@
 package com.example.lv3;
 
+import com.example.lv3.history.HistoryManager;
 import com.example.lv3.input.ConsoleInputProvider;
 import com.example.lv3.output.ConsoleOutputReader;
 
@@ -9,7 +10,8 @@ public class Main {
         App app = new App(
                 new ConsoleInputProvider(new Parser()),
                 new ConsoleOutputReader(),
-                new Calculator<>()
+                new Calculator<>(),
+                new HistoryManager<>()
         );
         app.run();
     }

@@ -3,21 +3,28 @@ package com.example.lv3;
 import com.example.lv3.enums.AppStatus;
 import com.example.lv3.enums.Operator;
 import com.example.lv3.formatter.ResultFormatter;
+import com.example.lv3.history.History;
+import com.example.lv3.history.HistoryManager;
 import com.example.lv3.input.InputProvider;
 import com.example.lv3.output.OutputReader;
+
+import java.util.List;
 
 public class App {
 
     private final InputProvider input;
     private final OutputReader output;
     private final Calculator<Double> calculator;
+    private final HistoryManager<Double, Double> historyManager;
 
     private AppStatus status = AppStatus.IN_PROGRESS;
+    private int historyId = 1;
 
-    public App(InputProvider input, OutputReader output, Calculator<Double> calculator) {
+    public App(InputProvider input, OutputReader output, Calculator<Double> calculator, HistoryManager<Double, Double> historyManager) {
         this.input = input;
         this.output = output;
         this.calculator = calculator;
+        this.historyManager = historyManager;
     }
 
     public void run() {
@@ -33,11 +40,36 @@ public class App {
                 String option = input.readInput();
 
                 switch (option) {
-                    case "1" -> calculate();
-                    case "2" -> calculator.removeResult();
+                    case "1" -> {
+                        output.print("첫 번째 숫자를 입력하세요: ");
+                        double num1 = Double.parseDouble(input.readNumber());
+                        output.print("두 번째 숫자를 입력하세요: ");
+                        double num2 = Double.parseDouble(input.readNumber());
+
+                        output.print("사칙연산 기호를 입력하세요: ");
+                        Operator operator = Operator.fromSymbol(input.readInput());
+
+                        Double result = calculator.calculate(num1, num2, operator);
+
+                        History<Double, Double> history = new History<>(num1, num2, operator, result, historyId++);
+                        historyManager.addHistory(history);
+
+                        output.println("계산 결과: " + ResultFormatter.format(result));
+
+                        output.println("\n===[입력된 결과 값보다 큰 History]===");
+                        List<History<Double, Double>> resultGreaterThan = historyManager.getHistoriesWithResultGreaterThan(result);
+                        for (History<Double, Double> greaterThan : resultGreaterThan) {
+                            output.println(greaterThan.toString());
+                        }
+                        output.println("\n==================================\n");
+                    }
+                    case "2" -> historyManager.removeOldHistory();
                     case "3" -> {
                         output.println("결과 목록");
-                        calculator.printResults();
+                        List<History<Double, Double>> histories = historyManager.getAllHistories();
+                        for (History<Double, Double> history : histories) {
+                            output.println(history.toString());
+                        }
                     }
                     case "4" -> {
                         output.println("프로그램을 종료합니다.");
@@ -50,23 +82,5 @@ public class App {
                 output.println("오류가 발생했습니다: " + e.getMessage() + "\n");
             }
         }
-
     }
-
-    private void calculate() {
-        output.print("첫 번째 숫자를 입력하세요: ");
-        double num1 = Double.parseDouble(input.readNumber());
-        output.print("두 번째 숫자를 입력하세요: ");
-        double num2 = Double.parseDouble(input.readNumber());
-
-        output.print("사칙연산 기호를 입력하세요: ");
-        Operator operator = Operator.fromSymbol(input.readInput());
-
-        Double result = calculator.calculate(num1, num2, operator);
-        calculator.saveResult(result);
-        calculator.saveFormula(num1, num2, operator);
-
-        output.println("계산 결과: " + ResultFormatter.format(result));
-    }
-
 }
