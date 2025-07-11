@@ -6,13 +6,14 @@ import com.example.lv3.exception.InvalidOperationInputException;
 import java.util.regex.Pattern;
 
 public class Parser {
+
     private static final Pattern OPERATOR_PATTEN = Pattern.compile("[+\\-*/]*");
-    private static final Pattern NUMERIC_PATTERN = Pattern.compile("^[0-9]*$");
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile("^\\d+(\\.\\d+)?$");
 
     public String parseNum(String input) {
         boolean isNum = NUMERIC_PATTERN.matcher(input).matches();
         if (!isNum) {
-            throw new InvalidNumberInputException("숫자가 아닙니다.");
+            throw new InvalidNumberInputException(input + "은 숫자가 아닙니다.");
         }
 
         return input;
